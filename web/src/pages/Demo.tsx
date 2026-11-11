@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { friendlyError, resetDemo } from "../api";
 
 const FRAMES = [
@@ -11,6 +11,8 @@ export function Demo() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [key, setKey] = useState(0);
+  // Fresh URL on each load/reload so device frames never show a cached old build.
+  const stamp = useMemo(() => Date.now(), [key]);
 
   async function onReset() {
     if (!confirm("Delete all messages and logs in the demo room?")) return;
@@ -48,7 +50,7 @@ export function Demo() {
         {FRAMES.map((f) => (
           <figure key={f.role} className="device-wrap">
             <div className={f.cls}>
-              <iframe key={key} title={f.role} src={`/room/demo?role=${f.role}`} allow="microphone; autoplay" />
+              <iframe key={key} title={f.role} src={`/room/demo?role=${f.role}&v=${stamp}`} allow="microphone; autoplay" />
             </div>
             <figcaption>{f.label}</figcaption>
           </figure>

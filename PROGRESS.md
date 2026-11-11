@@ -46,10 +46,12 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 - `npm run deploy` uses `firebase deploy --force` so the Artifact Registry cleanup policy is set automatically (otherwise the deploy exits with an error after creating functions).
 - Removed the `lint` predeploy step added by `firebase init` (eslint google style would fail on formatting and block deploys); `build` still runs.
 
-- Theme (human request): Japanese washi style — kinari paper background with a subtle SVG fiber texture, soft matcha green `#b7c9a5` buttons with sumi ink text, persimmon accents `#e7b88c`, Noto Serif TC headings. Alerts are soft persimmon paper with a strong `#c87444` edge instead of red. Text contrast is 4.5:1 or higher everywhere (buttons 7.4:1).
+- Theme (human request): Japanese washi style — kinari paper background with a subtle SVG fiber texture, soft matcha green `#b7c9a5` buttons with sumi ink text, persimmon accents `#e7b88c`, bold Noto Sans TC headings (serif headings were tried and reverted at the human's request). Alerts are soft persimmon paper with a strong `#c87444` edge instead of red. Text contrast is 4.5:1 or higher everywhere (buttons 7.4:1).
 - Prompts add one line of context: Ama is a grandmother (阿嬤 / おばあちゃん), because the model translated "Ama" as 阿公. Care log transcripts use localized role names and leave out coach advice; coach steps are split onto separate lines.
 
 - Hosting headers: HTML is `no-cache` and `/assets/**` (hashed files) is cached for a year, so a deploy shows up on the next reload. Firebase's default `max-age=3600` kept phones on the old version for up to an hour.
+
+- `/demo` loads each device frame as `/room/demo?role=…&v=<timestamp>` so recordings never show a cached old build.
 
 ## Known issues
 - Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.

@@ -31,7 +31,6 @@
   --paper: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0 0.26 0 0 0 0.07 0'/></filter><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.006 0.09' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.43 0 0 0 0 0.3 0 0 0 0.10 -0.03'/></filter><rect width='100%' height='100%' filter='url(%23n)'/><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
   --radius: 16px;
   --shadow: 0 1px 3px rgba(70, 55, 35, 0.07);
-  --serif: "Noto Serif TC", "Hiragino Mincho ProN", "Yu Mincho", serif;
   font-family: "Noto Sans TC", "Hiragino Sans", "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--ink);
   background: var(--bg);
@@ -170,8 +169,7 @@ a {
   font-size: 30px;
 }
 .who-name {
-  font-family: var(--serif);
-  font-weight: 600;
+  font-weight: 800;
   font-size: 1.1em;
 }
 .who-sub {
@@ -513,8 +511,6 @@ a {
   gap: 8px;
 }
 .log-head h2 {
-  font-family: var(--serif);
-  font-weight: 600;
   font-size: 1.05em;
   margin: 0;
 }
@@ -582,9 +578,8 @@ a {
   font-size: 44px;
   margin: 4px 0;
   color: var(--brand-strong);
-  font-family: var(--serif);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 .tagline {
   font-size: 1.3em;
@@ -650,7 +645,6 @@ a {
 }
 .demo-brand b {
   color: var(--brand-strong);
-  font-family: var(--serif);
 }
 .demo-brand span {
   color: var(--muted);
