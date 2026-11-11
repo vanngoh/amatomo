@@ -61,9 +61,9 @@ export function Composer({ role, lang, quickLines, bigMic }: { role: Role; lang:
             onClick={mic.toggle}
             disabled={sending}
             aria-label={mic.listening ? s.tapToStop : s.tapToSpeak}
+            title={mic.listening ? s.tapToStop : s.tapToSpeak}
           >
-            <span className="mic-icon">{mic.listening ? "⏹" : "🎤"}</span>
-            <span className="mic-label">{mic.listening ? s.tapToStop : s.tapToSpeak}</span>
+            {mic.listening ? <StopIcon /> : <MicIcon />}
           </button>
         ) : (
           <div className="hint">{s.noMic}</div>
@@ -77,5 +77,24 @@ export function Composer({ role, lang, quickLines, bigMic }: { role: Role; lang:
         </button>
       </form>
     </div>
+  );
+}
+
+function MicIcon() {
+  return (
+    <svg className="mic-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="9" y="2.5" width="6" height="12" rx="3" />
+      <path d="M5.5 11a6.5 6.5 0 0 0 13 0" />
+      <path d="M12 17.5V21" />
+      <path d="M8.5 21h7" />
+    </svg>
+  );
+}
+
+function StopIcon() {
+  return (
+    <svg className="mic-svg" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor" />
+    </svg>
   );
 }
