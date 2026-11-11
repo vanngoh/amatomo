@@ -12,6 +12,10 @@ export function gmiConfig() {
       .trim()
       .replace(/\/+$/, ""),
     model: (process.env.GMI_MODEL || "deepseek-ai/DeepSeek-V4.1-Flash").trim(),
+    // Thinking models spend max_tokens on hidden reasoning and return empty
+    // content. "none" turns that off; set GMI_REASONING_EFFORT= (empty) to
+    // omit the parameter for models that reject it.
+    reasoningEffort: (process.env.GMI_REASONING_EFFORT ?? "none").trim(),
   };
 }
 
@@ -36,7 +40,7 @@ async function callOnce(
   user: string,
   maxTokens: number
 ): Promise<string> {
-  const {apiKey, baseUrl, model} = gmiConfig();
+  const {apiKey, baseUrl, model, reasoningEffort} = gmiConfig();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25_000);
   try {
@@ -50,6 +54,7 @@ async function callOnce(
         model,
         temperature: 0.2,
         max_tokens: maxTokens,
+        ...(reasoningEffort ? {reasoning_effort: reasoningEffort} : {}),
         messages: [
           {role: "system", content: system},
           {role: "user", content: user},

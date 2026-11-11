@@ -90,17 +90,29 @@ function validateTranslate(v: unknown): TranslateResult {
   };
 }
 
+/** Models sometimes return lists or objects where we asked for a string. */
+function toText(x: unknown): string {
+  if (typeof x === "string") return x.trim();
+  if (typeof x === "number" || typeof x === "boolean") return String(x);
+  if (Array.isArray(x)) return x.map(toText).filter(Boolean).join("；");
+  if (x && typeof x === "object") {
+    return Object.values(x).map(toText).filter(Boolean).join("；");
+  }
+  return "";
+}
+
 function validateLog(v: unknown): CareLog {
-  const o = v as Partial<CareLog>;
-  const str = (x: unknown) => (typeof x === "string" ? x : "");
+  const o = v as Record<string, unknown>;
   if (!o || typeof o !== "object") throw new Error("bad log");
-  if (!str(o.summary)) throw new Error("missing summary");
+  const summary = toText(o.summary);
+  if (!summary) throw new Error("missing summary");
+  const alerts = Array.isArray(o.alerts) ? o.alerts : o.alerts ? [o.alerts] : [];
   return {
-    meals: str(o.meals),
-    medication: str(o.medication),
-    mood: str(o.mood),
-    alerts: Array.isArray(o.alerts) ? o.alerts.map(String).slice(0, 20) : [],
-    summary: str(o.summary),
+    meals: toText(o.meals) || "—",
+    medication: toText(o.medication) || "—",
+    mood: toText(o.mood) || "—",
+    alerts: alerts.map(toText).filter(Boolean).slice(0, 20),
+    summary,
   };
 }
 

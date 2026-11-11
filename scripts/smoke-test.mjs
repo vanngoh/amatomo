@@ -22,12 +22,18 @@ connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
 connectFirestoreEmulator(db, "127.0.0.1", 8080);
 connectFunctionsEmulator(fns, "127.0.0.1", 5001);
 
+// EXPECT_REAL=1 also fails if any function fell back to mock mode.
+const EXPECT_REAL = process.env.EXPECT_REAL === "1";
 let failures = 0;
 function check(cond, label) {
   console.log(`${cond ? "✅" : "❌"} ${label}`);
   if (!cond) failures++;
 }
-const call = (name, data) => httpsCallable(fns, name)(data).then((r) => r.data);
+const call = (name, data) =>
+  httpsCallable(fns, name)(data).then((r) => {
+    if (EXPECT_REAL) check(r.data.mock === false, `${name} used the real LLM (mock=false)`);
+    return r.data;
+  });
 
 async function checkMessage(id, label) {
   const snap = await getDoc(doc(db, "rooms", "demo", "messages", id));

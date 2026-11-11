@@ -9,6 +9,7 @@
     "build": "npm --prefix functions run build && npm --prefix web run build",
     "test": "node scripts/smoke-test.mjs",
     "test:ci": "npm --prefix functions run build && firebase emulators:exec --only auth,firestore,functions --project demo-amatomo \"node scripts/smoke-test.mjs\"",
+    "test:real": "npm --prefix functions run build && EXPECT_REAL=1 firebase emulators:exec --only auth,firestore,functions --project demo-amatomo \"node scripts/smoke-test.mjs\"",
     "deploy": "npm run build && firebase deploy --project amatomodemo --force"
   },
   "devDependencies": {

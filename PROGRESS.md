@@ -47,6 +47,7 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 - Removed the `lint` predeploy step added by `firebase init` (eslint google style would fail on formatting and block deploys); `build` still runs.
 
 ## Known issues
+- Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.
 - Care log docs are keyed by date only, so regenerating in another language overwrites the stored log (the UI always shows the latest result).
 - Rate limit is in memory per function instance (fine for the demo, not a real quota).
 - Web bundle is ~850 kB (Firebase SDK); no code splitting.
