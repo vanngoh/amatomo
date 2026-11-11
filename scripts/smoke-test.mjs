@@ -70,13 +70,15 @@ async function main() {
 
   // line 3
   const r3 = await call("sendMessage", { roomId: "demo", senderRole: "caregiver", text: LINES.line3, lang: "id-ID" });
-  await checkMessage(r3.id, "line 3");
+  const m3 = await checkMessage(r3.id, "line 3");
+  if (EXPECT_REAL) check(/阿嬤/.test(m3?.translations?.["zh-TW"] || "") && !/阿公/.test(m3?.translations?.["zh-TW"] || ""), "line 3: Siti's 'Ama' stays 阿嬤 (not 阿公)");
 
   // Family toggled to zh-TW but typed Japanese: the real language wins.
   const rj = await call("sendMessage", { roomId: "demo", senderRole: "family", text: "お母さん、今日はゆっくり休んでね。", lang: "zh-TW" });
   const mj = await checkMessage(rj.id, "mislabelled Japanese");
   check(mj?.originalLang === "ja-JP", "detects Japanese typed with the 中 toggle on");
   check(!/[\u3040-\u30ff]/.test(mj?.translations?.["zh-TW"] || ""), "zh-TW field has no Japanese kana");
+  if (EXPECT_REAL) check(/媽/.test(mj?.translations?.["zh-TW"] || "") && !/阿嬤/.test(mj?.translations?.["zh-TW"] || ""), "family's お母さん stays 媽 in zh-TW");
 
   // M3: care log
   for (const lang of ["zh-TW", "ja-JP"]) {

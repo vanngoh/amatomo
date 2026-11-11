@@ -57,6 +57,8 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 
 - `sendMessage` detects the real language from the script (kana → ja-JP, Han → zh-TW, Latin → id-ID) instead of trusting the role's language setting, so a family member typing Japanese with 中 selected still gets a proper Chinese translation on Ama's tablet.
 
+- Translation keeps "mom" when the family addresses Ama as their mother (媽 / お母さん / Ibu); everyone else's "Ama" stays 阿嬤. `npm run test:real` checks both.
+
 ## Known issues
 - Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.
 - Care log docs are keyed by date only, so regenerating in another language overwrites the stored log (the UI always shows the latest result).

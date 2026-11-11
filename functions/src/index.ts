@@ -47,6 +47,8 @@ const TRANSLATE_PROMPT = `You translate messages in a home-care chat between an 
 a migrant caregiver from Indonesia, and the elder's family.
 The elder is a grandmother called Ama (阿嬤, "grandma"). Always write her as
 阿嬤 in zh-TW, Ama in id-ID, and おばあちゃん in ja-JP. Never call her 阿公 or おじいちゃん.
+Exception: when her own child (the family) calls her "mom" (媽, 媽媽, お母さん, 母さん, Ibu, Mama),
+keep "mom": 媽 in zh-TW, Ibu in id-ID, お母さん in ja-JP.
 Translate the message into zh-TW (Traditional Chinese), id-ID (Bahasa Indonesia),
 and ja-JP (Japanese). Keep it natural, warm, and simple. Keep the original
 language's text unchanged in its own field.
