@@ -46,7 +46,7 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 - `npm run deploy` uses `firebase deploy --force` so the Artifact Registry cleanup policy is set automatically (otherwise the deploy exits with an error after creating functions).
 - Removed the `lint` predeploy step added by `firebase init` (eslint google style would fail on formatting and block deploys); `build` still runs.
 
-- Theme changed (human request): sage green `#3f7a4e` + soft orange `#e8833a` on cream; alerts use burnt orange `#c2571a` instead of red.
+- Theme (human request): Japanese washi style — kinari paper background with a subtle SVG fiber texture, soft matcha green `#b7c9a5` buttons with sumi ink text, persimmon accents `#e7b88c`, Noto Serif TC headings. Alerts are soft persimmon paper with a strong `#c87444` edge instead of red. Text contrast is 4.5:1 or higher everywhere (buttons 7.4:1).
 - Prompts add one line of context: Ama is a grandmother (阿嬤 / おばあちゃん), because the model translated "Ama" as 阿公. Care log transcripts use localized role names and leave out coach advice; coach steps are split onto separate lines.
 
 ## Known issues
