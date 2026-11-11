@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, limitToLast, onSnapshot, orderBy, query, Timestamp } from "firebase/firestore";
 import { db, ensureSignedIn, ROOM_ID } from "./firebase";
+import { friendlyError } from "./api";
 import type { Message } from "./types";
 
 /** Live feed of rooms/demo/messages, oldest first. */
@@ -39,7 +40,7 @@ export function useMessages() {
         );
       })
       .catch((e) => {
-        setError(`Sign-in failed: ${e?.message || e}`);
+        setError(friendlyError(e));
         setLoading(false);
       });
     return () => {

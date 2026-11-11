@@ -69,6 +69,8 @@ export async function resetDemo() {
 export function friendlyError(e: unknown): string {
   const code = (e as { code?: string })?.code || "";
   const msg = (e as { message?: string })?.message || String(e);
+  if (/configuration-not-found|operation-not-allowed|admin-restricted/.test(code + msg))
+    return "Anonymous sign-in is off. Turn it on in Firebase console → Authentication → Sign-in method → Anonymous.";
   if (code.includes("resource-exhausted")) return "Too many requests — please wait a moment.";
   if (code.includes("unauthenticated")) return "Not signed in yet — please reload.";
   if (code.includes("invalid-argument")) return msg;
