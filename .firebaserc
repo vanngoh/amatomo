@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "amatomodemo",
+    "demo": "demo-amatomo"
+  }
+}

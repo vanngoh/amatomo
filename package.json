@@ -1,0 +1,18 @@
+{
+  "name": "amatomo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "npm --prefix functions install && npm --prefix web install",
+    "dev": "npm --prefix functions run build && concurrently -k -n fn,emu,web -c magenta,blue,green \"npm --prefix functions run build:watch\" \"firebase emulators:start --only auth,firestore,functions --project demo-amatomo\" \"npm --prefix web run dev\"",
+    "emulators": "npm --prefix functions run build && firebase emulators:start --only auth,firestore,functions --project demo-amatomo",
+    "build": "npm --prefix functions run build && npm --prefix web run build",
+    "test": "node scripts/smoke-test.mjs",
+    "test:ci": "npm --prefix functions run build && firebase emulators:exec --only auth,firestore,functions --project demo-amatomo \"node scripts/smoke-test.mjs\"",
+    "deploy": "npm run build && firebase deploy --project amatomodemo"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "firebase": "^12.0.0"
+  }
+}
