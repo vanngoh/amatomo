@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 360" width="1240" height="360">
+<rect width="1240" height="360" fill="#fbf7ef"/>
+<g transform="translate(36 42) scale(0.9)"><svg viewBox="84 112 344 300" width="344" height="300"><defs><clipPath id="c1l"><circle cx="194" cy="228" r="105"/></clipPath></defs><circle cx="194" cy="228" r="105" fill="#9db48a"/><polygon points="256.0,400.0 133.6,313.9 194.0,228.0 256.0,228.0" fill="#9db48a"/><circle cx="318" cy="228" r="105" fill="#e7a06a"/><polygon points="256.0,400.0 378.4,313.9 318.0,228.0 256.0,228.0" fill="#e7a06a"/><circle cx="318" cy="228" r="105" fill="#f6d9b0" clip-path="url(#c1l)"/></svg></g>
+<text x="400" y="185" font-family="Hiragino Sans, Noto Sans TC, Helvetica" font-weight="800" font-size="128" fill="#5e7a54" letter-spacing="-4">AmaTomo</text>
+<text x="404" y="252" font-family="Hiragino Sans, Noto Sans TC, Helvetica" font-weight="700" font-size="40" fill="#6c6256">One care team, every language</text>
+<text x="404" y="306" font-family="Hiragino Sans, Noto Sans TC, Helvetica" font-weight="600" font-size="30" fill="#9a8c7a">阿嬤 a-má “grandma” + 友 tomo “friend”</text>
+</svg>
