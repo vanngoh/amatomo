@@ -1,39 +1,51 @@
 const ROLES = [
-  { href: "/room/demo?role=elder", icon: "👵", title: "Ama · 阿嬤", sub: "Tablet · 中文 (zh-TW)" },
-  { href: "/room/demo?role=caregiver", icon: "🧕", title: "Siti · Caregiver", sub: "Phone · Bahasa Indonesia" },
-  { href: "/room/demo?role=family", icon: "👩", title: "Family · 家人 / 家族", sub: "Phone · 中文 / 日本語" },
+  { href: "/room/demo?role=elder", icon: "👵", cls: "elder", title: "Ama · 阿嬤", sub: "Tablet · 中文" },
+  { href: "/room/demo?role=caregiver", icon: "🧕", cls: "caregiver", title: "Siti · Caregiver", sub: "Phone · Bahasa Indonesia" },
+  { href: "/room/demo?role=family", icon: "👩", cls: "family", title: "Family · 家人 / 家族", sub: "Phone · 中文 / 日本語" },
 ];
+
+const FEATURES = ["🌏 Live translation", "🔊 Read aloud", "🔔 Health alerts", "📋 Daily care log", "🤖 Caregiver coach"];
 
 export function Landing() {
   return (
     <main className="landing">
-      <div className="hero">
-        <div className="logo">🧡</div>
+      <div className="blob blob-a" aria-hidden="true" />
+      <div className="blob blob-b" aria-hidden="true" />
+      <section className="hero">
+        <div className="logo-mark" aria-hidden="true">
+          🧡
+        </div>
         <h1>AmaTomo</h1>
         <p className="tagline">One care team, every language</p>
         <p className="meaning">
-          阿嬤 <i>a-má</i> (Taiwanese “grandma”) + 友 <i>tomo</i> (Japanese “friend”)
+          阿嬤 <i>a-má</i> “grandma” + 友 <i>tomo</i> “friend”
         </p>
-      </div>
-      <div className="role-cards">
+        <div className="feature-pills">
+          {FEATURES.map((f) => (
+            <span key={f} className="feature-pill">
+              {f}
+            </span>
+          ))}
+        </div>
+        <a className="cta" href="/demo">
+          🎬 Open the demo view <span aria-hidden="true">→</span>
+        </a>
+      </section>
+      <section className="role-cards">
         {ROLES.map((r) => (
-          <a key={r.href} className="role-card" href={r.href}>
-            <span className="role-icon">{r.icon}</span>
-            <span>
+          <a key={r.href} className={`role-card role-${r.cls}`} href={r.href}>
+            <span className={`avatar avatar-${r.cls} avatar-lg`}>{r.icon}</span>
+            <span className="role-text">
               <b>{r.title}</b>
               <small>{r.sub}</small>
             </span>
+            <span className="role-arrow" aria-hidden="true">
+              →
+            </span>
           </a>
         ))}
-        <a className="role-card demo-card" href="/demo">
-          <span className="role-icon">🎬</span>
-          <span>
-            <b>Demo view</b>
-            <small>All three devices side by side</small>
-          </span>
-        </a>
-      </div>
-      <p className="fineprint">AI translates, reads messages aloud, flags health red flags, and writes the daily care log.</p>
+      </section>
+      <p className="fineprint">No audio is stored · Red flags go straight to the family · The coach never diagnoses</p>
     </main>
   );
 }

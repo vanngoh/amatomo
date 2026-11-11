@@ -27,6 +27,8 @@ const T = {
     loading: "產生中…",
     sending: "翻譯中…",
     noMic: "此瀏覽器不支援語音輸入，請用文字輸入。",
+    today: "今天",
+    live: "即時同步",
   },
   "ja-JP": {
     role: { elder: "おばあちゃん", caregiver: "介護士 Siti", family: "家族", coach: "AIケアコーチ" },
@@ -54,6 +56,8 @@ const T = {
     loading: "作成中…",
     sending: "翻訳中…",
     noMic: "このブラウザは音声入力に対応していません。文字で入力してください。",
+    today: "今日",
+    live: "リアルタイム同期",
   },
   "id-ID": {
     role: { elder: "Ama", caregiver: "Siti (saya)", family: "Keluarga", coach: "Pelatih Perawatan AI" },
@@ -63,7 +67,7 @@ const T = {
     listening: "Mendengarkan…",
     tapToSpeak: "Ketuk untuk bicara",
     tapToStop: "Ketuk untuk berhenti",
-    enableSound: "🔊 Ketuk untuk menyalakan suara",
+    enableSound: "🔊 Nyalakan suara",
     soundOn: "🔊 Bacakan otomatis: AKTIF",
     soundOff: "🔈 Bacakan otomatis: MATI",
     quick: "Kalimat cepat",
@@ -81,6 +85,8 @@ const T = {
     loading: "Membuat…",
     sending: "Menerjemahkan…",
     noMic: "Browser ini tidak mendukung input suara. Silakan ketik.",
+    today: "Hari ini",
+    live: "Tersinkron",
   },
 };
 
@@ -118,3 +124,13 @@ export const DEMO_LINES = {
   line3: "Ama sudah minum obat tekanan darah tadi pagi.",
   line4: "Ama pusing dan tidak mau makan. Apa yang harus saya lakukan?",
 };
+
+/** Split "1. … 2. … 3. …" advice into steps (returns [] if it isn't a list). */
+export function parseSteps(text: string): string[] {
+  const parts = text
+    .split(/\n+|\s+(?=[1-9][.)．]\s)/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (parts.length < 2 || !parts.every((p) => /^[1-9][.)．]/.test(p))) return [];
+  return parts.map((p) => p.replace(/^[1-9][.)．]\s*/, ""));
+}

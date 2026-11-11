@@ -1,5 +1,6 @@
 import { t } from "../i18n";
 import type { CareLog, Lang } from "../types";
+import { Sheet } from "./Sheet";
 
 export function LogCard({
   log,
@@ -16,44 +17,60 @@ export function LogCard({
 }) {
   const s = t(lang);
   return (
-    <div className="log-card">
-      <div className="log-head">
-        <h2>{s.todayLog.replace("📋 ", "")}</h2>
-        {log && <span className="log-date">{log.date}</span>}
-        <button className="ghost" onClick={onClose}>
-          {s.close}
-        </button>
-      </div>
+    <Sheet
+      tone="log"
+      closeLabel={s.close}
+      onClose={onClose}
+      title={
+        <>
+          {s.todayLog} {log && !loading && <span className="date-pill">{log.date}</span>}
+        </>
+      }
+    >
+      {error && <div className="error">{error}</div>}
       {loading && (
-        <div className="status">
-          <span className="spinner small" /> {s.loading}
+        <div className="log-tiles">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="tile skeleton" />
+          ))}
+          <div className="tile tile-wide skeleton" />
         </div>
       )}
-      {error && <div className="error">{error}</div>}
       {log && !loading && (
-        <dl className="log-grid">
-          <dt>🍚 {s.meals}</dt>
-          <dd>{log.meals}</dd>
-          <dt>💊 {s.medication}</dt>
-          <dd>{log.medication}</dd>
-          <dt>🙂 {s.mood}</dt>
-          <dd>{log.mood}</dd>
-          <dt>🔔 {s.alerts}</dt>
-          <dd>
-            {log.alerts.length ? (
-              <ul className="log-alerts">
-                {log.alerts.map((a, i) => (
-                  <li key={i}>{a}</li>
-                ))}
-              </ul>
-            ) : (
-              s.noAlerts
-            )}
-          </dd>
-          <dt>📝 {s.summary}</dt>
-          <dd className="log-summary">{log.summary}</dd>
-        </dl>
+        <>
+          <div className="summary-card">{log.summary}</div>
+          <div className="log-tiles">
+            <div className="tile tile-meal">
+              <span className="tile-icon">🍚</span>
+              <div className="tile-label">{s.meals}</div>
+              <div className="tile-text">{log.meals}</div>
+            </div>
+            <div className="tile tile-med">
+              <span className="tile-icon">💊</span>
+              <div className="tile-label">{s.medication}</div>
+              <div className="tile-text">{log.medication}</div>
+            </div>
+            <div className="tile tile-mood">
+              <span className="tile-icon">🙂</span>
+              <div className="tile-label">{s.mood}</div>
+              <div className="tile-text">{log.mood}</div>
+            </div>
+            <div className={`tile tile-wide ${log.alerts.length ? "tile-alert" : "tile-ok"}`}>
+              <span className="tile-icon">{log.alerts.length ? "🔔" : "✅"}</span>
+              <div className="tile-label">{s.alerts}</div>
+              {log.alerts.length ? (
+                <ul className="log-alerts">
+                  {log.alerts.map((a, i) => (
+                    <li key={i}>{a}</li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="tile-text">{s.noAlerts}</div>
+              )}
+            </div>
+          </div>
+        </>
       )}
-    </div>
+    </Sheet>
   );
 }

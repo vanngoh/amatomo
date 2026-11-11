@@ -3,10 +3,10 @@ import { friendlyError, generateCareLog } from "../api";
 import { AlertBanners } from "../components/AlertBanners";
 import { CoachPanel } from "../components/CoachPanel";
 import { Composer, QuickLine } from "../components/Composer";
-import { Feed } from "../components/Feed";
+import { Avatar, Feed } from "../components/Feed";
 import { LogCard } from "../components/LogCard";
 import { MockBadge } from "../components/MockBadge";
-import { DEMO_LINES, ROLE_ICON, t } from "../i18n";
+import { DEMO_LINES, t } from "../i18n";
 import { speak, stopSpeaking, unlockSpeech } from "../speech";
 import type { CareLog, Lang } from "../types";
 import { useMessages } from "../useMessages";
@@ -120,10 +120,12 @@ export function Room() {
     <div className={`room room-${role}`} lang={lang}>
       <header className="room-header">
         <div className="who">
-          <span className="who-icon">{ROLE_ICON[role]}</span>
+          <Avatar role={role} size="lg" />
           <div>
             <div className="who-name">{s.role[role]}</div>
-            <div className="who-sub">AmaTomo · {role === "family" ? "" : lang}</div>
+            <div className="who-sub">
+              <span className="live-dot" /> {s.live}
+            </div>
           </div>
         </div>
         <div className="header-actions">
@@ -142,41 +144,41 @@ export function Room() {
       </header>
 
       <div className="room-scroll">
-      {role === "family" && <AlertBanners messages={messages} lang={lang} />}
+        {role === "family" && <AlertBanners messages={messages} lang={lang} />}
 
-      <div className="toolbar">
-        {role !== "family" && !soundUnlocked ? (
-          <button className="sound-unlock" onClick={enableSound}>
-            {s.enableSound}
-          </button>
-        ) : (
-          role !== "elder" && (
-            <button className={`chip ${soundOn ? "on" : ""}`} onClick={toggleAutoSpeak}>
-              {soundOn ? s.soundOn : s.soundOff}
+        <div className="toolbar">
+          {role !== "family" && !soundUnlocked ? (
+            <button className="sound-unlock" onClick={enableSound}>
+              {s.enableSound}
             </button>
-          )
-        )}
-        {role === "caregiver" && (
-          <button className="chip coach-chip" onClick={() => setCoachOpen(!coachOpen)}>
-            🤖 Coach
-          </button>
-        )}
-        {role === "family" && (
-          <button className="chip log-chip" onClick={() => (logOpen ? setLogOpen(false) : loadLog(lang))}>
-            {s.todayLog}
-          </button>
-        )}
+          ) : (
+            role !== "elder" && (
+              <button className={`chip ${soundOn ? "on" : ""}`} onClick={toggleAutoSpeak} aria-pressed={soundOn}>
+                {soundOn ? s.soundOn : s.soundOff}
+              </button>
+            )
+          )}
+          {role === "caregiver" && (
+            <button className="chip coach-chip" onClick={() => setCoachOpen(true)}>
+              🤖 Coach
+            </button>
+          )}
+          {role === "family" && (
+            <button className="chip log-chip" onClick={() => loadLog(lang)}>
+              {s.todayLog}
+            </button>
+          )}
+        </div>
+
+        {error && <div className="error">{error}</div>}
+        <Feed messages={messages} lang={lang} viewer={role} loading={loading} />
       </div>
+      <Composer role={role} lang={lang} quickLines={quickLines} bigMic={role === "elder"} />
 
       {role === "caregiver" && coachOpen && <CoachPanel onClose={() => setCoachOpen(false)} />}
       {role === "family" && logOpen && (
         <LogCard log={log} lang={lang} loading={logLoading} error={logError} onClose={() => setLogOpen(false)} />
       )}
-
-      {error && <div className="error">{error}</div>}
-      <Feed messages={messages} lang={lang} viewer={role} loading={loading} />
-      </div>
-      <Composer role={role} lang={lang} quickLines={quickLines} bigMic={role === "elder"} />
     </div>
   );
 }

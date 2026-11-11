@@ -53,6 +53,8 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 
 - `/demo` loads each device frame as `/room/demo?role=…&v=<timestamp>` so recordings never show a cached old build.
 
+- UI refresh (human request: livelier, modern): chat bubbles with avatars and entry animations, live-sync dot, swipeable quick-line pills, pill input with send icon, mic with ripple rings and a live waveform, bottom sheets for Coach and Today's Log (skeleton loading, step cards, log tiles), landing hero with feature pills, demo header with a 6-step recording script. Animations are off under `prefers-reduced-motion`.
+
 ## Known issues
 - Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.
 - Care log docs are keyed by date only, so regenerating in another language overwrites the stored log (the UI always shows the latest result).

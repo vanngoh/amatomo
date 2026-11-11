@@ -1,6 +1,8 @@
 import { FormEvent, useState } from "react";
 import { askCoach, friendlyError } from "../api";
-import { COACH_UI, DEMO_LINES } from "../i18n";
+import { COACH_UI, DEMO_LINES, parseSteps } from "../i18n";
+import { Steps } from "./Feed";
+import { Sheet } from "./Sheet";
 
 export function CoachPanel({ onClose }: { onClose: () => void }) {
   const [q, setQ] = useState("");
@@ -15,8 +17,7 @@ export function CoachPanel({ onClose }: { onClose: () => void }) {
     setError(null);
     setResult(null);
     try {
-      const r = await askCoach(v, "id-ID");
-      setResult(r);
+      setResult(await askCoach(v, "id-ID"));
       setQ("");
     } catch (e) {
       setError(friendlyError(e));
@@ -30,36 +31,38 @@ export function CoachPanel({ onClose }: { onClose: () => void }) {
     ask(q);
   }
 
+  const steps = result ? parseSteps(result.advice) : [];
+
   return (
-    <div className="coach-panel">
-      <div className="log-head">
-        <h2>🤖 {COACH_UI.title}</h2>
-        <button className="ghost" onClick={onClose}>
-          Tutup
-        </button>
-      </div>
+    <Sheet tone="coach" closeLabel="Tutup" onClose={onClose} title={<>🤖 {COACH_UI.title}</>}>
       <p className="hint">{COACH_UI.hint}</p>
-      <button className="quick-btn" disabled={busy} onClick={() => ask(DEMO_LINES.line4)}>
-        <b>4</b> {DEMO_LINES.line4}
+      <button className="quick-btn quick-wide" disabled={busy} onClick={() => ask(DEMO_LINES.line4)}>
+        <b>4</b>
+        <span>{DEMO_LINES.line4}</span>
       </button>
-      <form className="text-row" onSubmit={onSubmit}>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={COACH_UI.placeholder} maxLength={500} lang="id" />
-        <button type="submit" disabled={busy || !q.trim()}>
+      <form className="pill-input" onSubmit={onSubmit}>
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={COACH_UI.placeholder} maxLength={500} lang="id" aria-label={COACH_UI.placeholder} />
+        <button type="submit" className="send send-text" disabled={busy || !q.trim()}>
           {COACH_UI.ask}
         </button>
       </form>
       {busy && (
-        <div className="status">
-          <span className="spinner small" /> {COACH_UI.thinking}
+        <div className="coach-thinking">
+          <span className="dots">
+            <i />
+            <i />
+            <i />
+          </span>
+          {COACH_UI.thinking}
         </div>
       )}
       {error && <div className="error">{error}</div>}
       {result && (
         <div className="coach-advice">
           {result.shouldEscalate && <div className="escalate">{COACH_UI.escalate}</div>}
-          <div className="advice-text">{result.advice}</div>
+          {steps.length ? <Steps steps={steps} /> : <div className="advice-text">{result.advice}</div>}
         </div>
       )}
-    </div>
+    </Sheet>
   );
 }
