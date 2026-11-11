@@ -1,19 +1,30 @@
 :root {
-  --bg: #fff8f0;
+  /* Warm, calm palette: sage green + soft orange on cream. */
+  --bg: #fbf7ef;
   --surface: #ffffff;
-  --ink: #2b2118;
-  --muted: #6b5a4b;
-  --line: #ecdcc9;
-  --brand: #c2410c;
+  --ink: #2f2a22;
+  --muted: #6b6152;
+  --line: #e8dfcd;
+  --brand: #3f7a4e;
   --brand-ink: #ffffff;
-  --brand-soft: #ffedd5;
-  --elder: #fef3c7;
-  --caregiver: #dcfce7;
-  --family: #e0f2fe;
-  --coach: #ede9fe;
-  --coach-ink: #4c1d95;
-  --alert: #b91c1c;
-  --alert-soft: #fee2e2;
+  --brand-soft: #e6f1e3;
+  --brand-glow: rgba(63, 122, 78, 0.2);
+  --accent: #e8833a;
+  --accent-soft: #fdebd7;
+  --accent-ink: #8a4313;
+  --elder: #fff3d9;
+  --elder-edge: #f0a64a;
+  --caregiver: #e3f1ea;
+  --caregiver-edge: #4f9a78;
+  --family: #fdebdc;
+  --family-edge: #e8833a;
+  --coach: #f5efe2;
+  --coach-ink: #5b4524;
+  --coach-edge: #c9a46a;
+  /* Alerts stay noticeable but use a burnt orange instead of red. */
+  --alert: #c2571a;
+  --alert-soft: #fde8d6;
+  --alert-glow: rgba(194, 87, 26, 0.3);
   --radius: 16px;
   --shadow: 0 2px 10px rgba(80, 40, 10, 0.08);
   font-family: "Noto Sans TC", "Hiragino Sans", "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -199,14 +210,14 @@ a {
   background: var(--brand-soft);
 }
 .coach-chip {
-  border-color: #c4b5fd;
+  border-color: var(--coach-edge);
   background: var(--coach);
   color: var(--coach-ink);
 }
 .log-chip {
-  border-color: var(--brand);
-  background: var(--brand-soft);
-  color: var(--brand);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
 }
 .sound-unlock {
   width: 100%;
@@ -216,7 +227,7 @@ a {
 }
 @keyframes pulse {
   50% {
-    box-shadow: 0 0 0 6px rgba(194, 65, 12, 0.18);
+    box-shadow: 0 0 0 6px var(--brand-glow);
   }
 }
 
@@ -260,19 +271,19 @@ a {
   align-self: flex-end;
 }
 .msg-elder {
-  border-left-color: #f59e0b;
+  border-left-color: var(--elder-edge);
   background: var(--elder);
 }
 .msg-caregiver {
-  border-left-color: #16a34a;
+  border-left-color: var(--caregiver-edge);
   background: var(--caregiver);
 }
 .msg-family {
-  border-left-color: #0284c7;
+  border-left-color: var(--family-edge);
   background: var(--family);
 }
 .msg-coach {
-  border-left-color: #7c3aed;
+  border-left-color: var(--coach-edge);
   background: var(--coach);
   color: var(--coach-ink);
   max-width: 100%;
@@ -320,7 +331,7 @@ a {
   gap: 8px;
 }
 .interim {
-  background: var(--brand-soft);
+  background: var(--accent-soft);
   border-radius: 10px;
   padding: 8px 12px;
   font-style: italic;
@@ -370,7 +381,7 @@ a {
   border-radius: 999px;
 }
 .mic.on {
-  background: var(--alert);
+  background: var(--accent);
   animation: pulse 1.2s ease-in-out infinite;
 }
 .mic-icon {
@@ -441,7 +452,7 @@ a {
   color: #fff;
   border-radius: 14px;
   padding: 10px 12px;
-  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.35);
+  box-shadow: 0 4px 14px var(--alert-glow);
   animation: slidein 0.35s ease-out;
 }
 @keyframes slidein {
@@ -484,7 +495,7 @@ a {
   border: 2px solid var(--brand-soft);
 }
 .coach-panel {
-  border-color: #c4b5fd;
+  border-color: var(--coach-edge);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -600,8 +611,8 @@ a {
   font-size: 32px;
 }
 .demo-card {
-  background: var(--brand-soft);
-  border-color: var(--brand);
+  background: var(--accent-soft);
+  border-color: var(--accent);
 }
 .fineprint {
   color: var(--muted);
@@ -612,7 +623,7 @@ a {
 .demo {
   padding: 12px 16px 24px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #fff1e6, var(--bg));
+  background: linear-gradient(180deg, #eef5e8, var(--bg));
 }
 .demo-header {
   display: flex;
@@ -660,10 +671,10 @@ a {
   color: var(--muted);
 }
 .device {
-  background: #1f1a17;
+  background: #2d3a2f;
   padding: 12px;
   border-radius: 36px;
-  box-shadow: 0 16px 40px rgba(40, 20, 5, 0.25);
+  box-shadow: 0 16px 40px rgba(40, 50, 30, 0.25);
 }
 .device iframe {
   display: block;

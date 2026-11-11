@@ -31,7 +31,7 @@ export function Demo() {
     <main className="demo">
       <header className="demo-header">
         <a href="/" className="demo-brand">
-          ❤️ <b>AmaTomo</b> <span>One care team, every language</span>
+          🧡 <b>AmaTomo</b> <span>One care team, every language</span>
         </a>
         <div className="demo-actions">
           {msg && <span className="status">{msg}</span>}

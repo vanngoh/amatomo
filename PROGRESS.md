@@ -46,6 +46,9 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 - `npm run deploy` uses `firebase deploy --force` so the Artifact Registry cleanup policy is set automatically (otherwise the deploy exits with an error after creating functions).
 - Removed the `lint` predeploy step added by `firebase init` (eslint google style would fail on formatting and block deploys); `build` still runs.
 
+- Theme changed (human request): sage green `#3f7a4e` + soft orange `#e8833a` on cream; alerts use burnt orange `#c2571a` instead of red.
+- Prompts add one line of context: Ama is a grandmother (阿嬤 / おばあちゃん), because the model translated "Ama" as 阿公. Care log transcripts use localized role names and leave out coach advice; coach steps are split onto separate lines.
+
 ## Known issues
 - Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.
 - Care log docs are keyed by date only, so regenerating in another language overwrites the stored log (the UI always shows the latest result).

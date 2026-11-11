@@ -13,7 +13,7 @@ export function AlertBanners({ messages, lang }: { messages: Message[]; lang: La
         <div key={m.id} className="alert-banner">
           <div className="alert-body">
             <div className="alert-title">
-              🚨 {s.alert}: {s.role[m.senderRole]}
+              🔔 {s.alert}: {s.role[m.senderRole]}
               {m.alertReason && <span className="alert-reason"> · {m.alertReason}</span>}
             </div>
             <div className="alert-text">{m.translations?.[lang] || m.originalText}</div>

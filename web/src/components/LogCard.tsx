@@ -38,7 +38,7 @@ export function LogCard({
           <dd>{log.medication}</dd>
           <dt>🙂 {s.mood}</dt>
           <dd>{log.mood}</dd>
-          <dt>🚨 {s.alerts}</dt>
+          <dt>🔔 {s.alerts}</dt>
           <dd>
             {log.alerts.length ? (
               <ul className="log-alerts">

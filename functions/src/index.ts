@@ -44,6 +44,8 @@ async function ensureRoom(roomId: string) {
 
 const TRANSLATE_PROMPT = `You translate messages in a home-care chat between an elderly person in Taiwan,
 a migrant caregiver from Indonesia, and the elder's family.
+The elder is a grandmother called Ama (阿嬤, "grandma"). Always write her as
+阿嬤 in zh-TW, Ama in id-ID, and おばあちゃん in ja-JP. Never call her 阿公 or おじいちゃん.
 Translate the message into zh-TW (Traditional Chinese), id-ID (Bahasa Indonesia),
 and ja-JP (Japanese). Keep it natural, warm, and simple. Keep the original
 language's text unchanged in its own field.
@@ -56,12 +58,26 @@ alertReason, if any, is a short English phrase.`;
 const careLogPrompt = (lang: Lang) =>
   `Summarize today's care-room messages into a daily care log for the family,
 written in ${LANG_NAMES[lang]}. Use only facts from the messages. Do not guess.
+The elder is a grandmother called Ama (阿嬤, "grandma"). Always write her as
+阿嬤 in zh-TW, Ama in id-ID, and おばあちゃん in ja-JP. Never call her 阿公 or おじいちゃん.
+Keep every field short. Each alert is one short sentence about Ama's health.
 Return only JSON:
 {"meals":"","medication":"","mood":"","alerts":[],"summary":""}`;
 
+const ROLE_LABELS: Record<Lang, Record<string, string>> = {
+  "zh-TW": {elder: "阿嬤", caregiver: "照護員 Siti", family: "家人"},
+  "ja-JP": {elder: "おばあちゃん", caregiver: "介護士 Siti", family: "家族"},
+  "id-ID": {elder: "Ama", caregiver: "Siti (caregiver)", family: "Keluarga"},
+};
+
+/** Put "1. … 2. … 3. …" steps on separate lines. */
+function splitSteps(s: string): string {
+  return s.replace(/\s+(?=[2-9][.)．]\s*)/g, "\n").trim();
+}
+
 const coachPrompt = (lang: Lang) =>
   `You support a migrant caregiver looking after an elderly person at home.
-Reply in ${LANG_NAMES[lang]}, in 3 short, calm, practical steps. Never diagnose or suggest
+Reply in ${LANG_NAMES[lang]}, in 3 short, calm, practical steps, numbered 1. 2. 3. Never diagnose or suggest
 medication changes. If anything sounds urgent or unsafe, say to contact the family
 or a doctor right away and set shouldEscalate to true.
 Return only JSON: {"advice":"","shouldEscalate":false}`;
@@ -216,10 +232,13 @@ export const generateCareLog = onCall({timeoutSeconds: 60}, async (req) => {
   let mock = true;
   if (!isMockMode() && messages.length) {
     try {
+      // Coach advice is guidance, not a fact about Ama, so leave it out.
       const transcript = messages
+        .filter((m) => m.senderRole !== "coach")
         .map(
           (m) =>
-            `[${m.time}] ${m.senderRole}${m.isAlert ? " (ALERT)" : ""}: ` +
+            `[${m.time}] ${ROLE_LABELS[lang][m.senderRole] || m.senderRole}` +
+            `${m.isAlert ? " (ALERT)" : ""}: ` +
             `${m.translations[lang] || m.originalText}`
         )
         .join("\n");
@@ -269,10 +288,11 @@ export const coach = onCall({timeoutSeconds: 90}, async (req) => {
         validateCoach,
         600
       );
-      advice = r.advice;
+      advice = splitSteps(r.advice);
       shouldEscalate = r.shouldEscalate;
       const t = await translate(advice, lang);
       translations = t.translations;
+      for (const l of LANGS) translations[l] = splitSteps(translations[l]);
       mock = t.mock;
     } catch (err) {
       logger.error("coach failed, using mock", {error: String(err)});

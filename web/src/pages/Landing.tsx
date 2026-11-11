@@ -8,7 +8,7 @@ export function Landing() {
   return (
     <main className="landing">
       <div className="hero">
-        <div className="logo">❤️</div>
+        <div className="logo">🧡</div>
         <h1>AmaTomo</h1>
         <p className="tagline">One care team, every language</p>
         <p className="meaning">
