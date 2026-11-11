@@ -1,6 +1,6 @@
 # AmaTomo progress
-Status: M6 docs and handoff (deploying to amatomodemo)
-Mode: MOCK (functions/.env has a placeholder GMI_API_KEY)
+Status: DONE: ready for human (run `npm run deploy` to push the real GMI key and release Hosting)
+Mode: REAL (GMI key in functions/.env, model deepseek-ai/DeepSeek-V4.1-Flash). Mock mode is still the automatic fallback.
 
 ## Milestones
 - [x] M0 scaffold: firebase.json (merged with the human's `firebase init`), `.firebaserc` (default `amatomodemo`, alias `demo` → `demo-amatomo`), rules, env examples, root scripts, emulators start.
@@ -11,7 +11,9 @@ Mode: MOCK (functions/.env has a placeholder GMI_API_KEY)
 - [x] M5 demo view: `/demo` with three device frames, Reset demo, Reload frames, landing page, loading states, friendly errors.
 - [x] M6 docs: README (architecture, run, switch to real project, privacy, safety, roadmap).
 
-Smoke test (`npm run test:ci`): 27/27 checks pass in mock mode.
+Smoke test (`npm run test:ci`): 27/27 checks pass in mock mode and in real mode (GMI).
+
+Deployed to `amatomodemo`: Firestore rules + indexes and the 3 functions (asia-east1, first deploy in mock mode). Hosting upload was not released because the first deploy stopped at the Artifact Registry cleanup-policy prompt; `npm run deploy` (now with `--force`) fixes both.
 
 ## How to run locally
 ```bash
@@ -40,7 +42,8 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 - Mock translations match the 4 demo lines with a fuzzy match (character-bigram similarity ≥ 0.75, ignoring punctuation), so speech-recognition output still hits the right line.
 - The elder feed hides coach messages (they're for the caregiver). The family phone starts with auto-speak off so `/demo` doesn't speak the same line twice; elder and caregiver auto-speak after "tap to enable sound".
 - No router library: `main.tsx` switches on `location.pathname`.
-- Default GMI model: `deepseek-ai/DeepSeek-V3-0324` at `https://api.gmi-serving.com/v1` — change in `functions/.env` if needed.
+- GMI model: `deepseek-ai/DeepSeek-V4.1-Flash` (~3 s per translation, clean JSON). Qwen3.8-Flash was ~7 s; DeepSeek-V3-0324 wraps JSON in code fences. Change `GMI_MODEL` in `functions/.env` if needed.
+- `npm run deploy` uses `firebase deploy --force` so the Artifact Registry cleanup policy is set automatically (otherwise the deploy exits with an error after creating functions).
 - Removed the `lint` predeploy step added by `firebase init` (eslint google style would fail on formatting and block deploys); `build` still runs.
 
 ## Known issues

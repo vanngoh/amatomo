@@ -9,7 +9,7 @@
     "build": "npm --prefix functions run build && npm --prefix web run build",
     "test": "node scripts/smoke-test.mjs",
     "test:ci": "npm --prefix functions run build && firebase emulators:exec --only auth,firestore,functions --project demo-amatomo \"node scripts/smoke-test.mjs\"",
-    "deploy": "npm run build && firebase deploy --project amatomodemo"
+    "deploy": "npm run build && firebase deploy --project amatomodemo --force"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

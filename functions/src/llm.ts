@@ -11,7 +11,7 @@ export function gmiConfig() {
     baseUrl: (process.env.GMI_BASE_URL || "https://api.gmi-serving.com/v1")
       .trim()
       .replace(/\/+$/, ""),
-    model: (process.env.GMI_MODEL || "deepseek-ai/DeepSeek-V3-0324").trim(),
+    model: (process.env.GMI_MODEL || "deepseek-ai/DeepSeek-V4.1-Flash").trim(),
   };
 }
 
