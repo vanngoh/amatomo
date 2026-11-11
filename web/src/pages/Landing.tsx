@@ -12,9 +12,7 @@ export function Landing() {
       <div className="blob blob-a" aria-hidden="true" />
       <div className="blob blob-b" aria-hidden="true" />
       <section className="hero">
-        <div className="logo-mark" aria-hidden="true">
-          🧡
-        </div>
+        <img className="logo-mark" src="/logo-mark.svg" alt="" width="96" height="84" />
         <h1>AmaTomo</h1>
         <p className="tagline">One care team, every language</p>
         <p className="meaning">

@@ -59,6 +59,8 @@ npm run test:ci      # build functions, start emulators, run smoke test, stop
 
 - Translation keeps "mom" when the family addresses Ama as their mother (媽 / お母さん / Ibu); everyone else's "Ama" stays 阿嬤. `npm run test:real` checks both.
 
+- Logo (human request): two speech bubbles (matcha green + persimmon) overlapping into one heart; the overlap is light like layered washi. Files in `brand/` (icon SVG/1024 PNG, transparent mark, horizontal lockup). The web app ships favicon, apple-touch-icon, 192/512 and maskable PNGs, and `manifest.webmanifest` so "Add to Home Screen" shows the logo.
+
 ## Known issues
 - Fixed: `DeepSeek-V4.1-Flash` thinks by default and spent all `max_tokens` on hidden reasoning, so live calls returned empty content and silently fell back to mock. `llm.ts` now sends `reasoning_effort: "none"` (override with `GMI_REASONING_EFFORT`). `npm run test:real` fails if any function falls back to mock.
 - Care log docs are keyed by date only, so regenerating in another language overwrites the stored log (the UI always shows the latest result).

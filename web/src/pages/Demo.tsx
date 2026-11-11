@@ -44,7 +44,7 @@ export function Demo() {
       <div className="blob blob-b" aria-hidden="true" />
       <header className="demo-header">
         <a href="/" className="demo-brand">
-          <span className="logo-mark small">🧡</span>
+          <img className="logo-mark small" src="/logo-mark.svg" alt="" width="40" height="35" />
           <b>AmaTomo</b>
           <span className="demo-tagline">One care team, every language</span>
         </a>
