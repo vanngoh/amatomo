@@ -18,6 +18,7 @@ import {
   LANG_NAMES,
   Role,
   Translations,
+  detectLang,
   rateLimit,
   requireAuth,
   requireLang,
@@ -179,12 +180,13 @@ export const sendMessage = onCall({timeoutSeconds: 60}, async (req) => {
   }
   rateLimit(roomId);
 
-  const r = await translate(text, lang);
+  const sourceLang = detectLang(text, lang);
+  const r = await translate(text, sourceLang);
   await ensureRoom(roomId);
   const msg = {
     senderRole,
     originalText: text,
-    originalLang: lang,
+    originalLang: sourceLang,
     translations: r.translations,
     isAlert: r.isAlert,
     alertReason: r.alertReason,

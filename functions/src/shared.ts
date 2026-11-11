@@ -83,3 +83,17 @@ export function taipeiToday(now = new Date()): {date: string; start: Date} {
 export function taipeiTime(d: Date): string {
   return new Date(d.getTime() + TAIPEI_OFFSET_MS).toISOString().slice(11, 16);
 }
+
+/**
+ * The language a message is really written in. People sometimes type in a
+ * language other than their app setting (e.g. family toggled to 中 but typing
+ * Japanese), so trust the script over the setting: kana means Japanese,
+ * Han characters mean Chinese (or Japanese if that was the setting), and
+ * Latin letters mean Indonesian.
+ */
+export function detectLang(text: string, declared: Lang): Lang {
+  if (/[぀-ヿ]/.test(text)) return "ja-JP";
+  if (/[㐀-鿿]/.test(text)) return declared === "ja-JP" ? "ja-JP" : "zh-TW";
+  if (/[A-Za-z]/.test(text)) return "id-ID";
+  return declared;
+}

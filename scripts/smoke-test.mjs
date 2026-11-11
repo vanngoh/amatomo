@@ -72,6 +72,12 @@ async function main() {
   const r3 = await call("sendMessage", { roomId: "demo", senderRole: "caregiver", text: LINES.line3, lang: "id-ID" });
   await checkMessage(r3.id, "line 3");
 
+  // Family toggled to zh-TW but typed Japanese: the real language wins.
+  const rj = await call("sendMessage", { roomId: "demo", senderRole: "family", text: "お母さん、今日はゆっくり休んでね。", lang: "zh-TW" });
+  const mj = await checkMessage(rj.id, "mislabelled Japanese");
+  check(mj?.originalLang === "ja-JP", "detects Japanese typed with the 中 toggle on");
+  check(!/[\u3040-\u30ff]/.test(mj?.translations?.["zh-TW"] || ""), "zh-TW field has no Japanese kana");
+
   // M3: care log
   for (const lang of ["zh-TW", "ja-JP"]) {
     const log = await call("generateCareLog", { roomId: "demo", lang });
